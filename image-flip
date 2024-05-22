@@ -147,6 +147,7 @@ vid_cnt = db_corners2(blackleft, blackright)
 vid_im = im_from_tup(image, vid_cnt)
 cv2.imshow("faces", vid_im)
 
+print("whee, first commit")
 faces_cnt = get_contours(vid_im, False)
 print(len(faces_cnt))
 # #cv2.drawContours(vid_im, faces_cnt, -1, (200, 200, 0), 2)
