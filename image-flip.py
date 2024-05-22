@@ -36,36 +36,6 @@ def sec_biggest_area(contours):
             max_cnt = i
     return sec_cnt
 
-def least_corners(contours):
-    min_corn = 100
-    min_cnt = contours[0]
-    for cc in contours:
-        if (3 < len(cc) < min_corn):
-            min_corn = len(cc)
-            min_cnt = cc
-        elif len(cc) == min_corn:
-            if cv2.contourArea(cc) > cv2.contourArea(min_cnt):
-                min_corn = len(cc)
-                min_cnt = contours[i]
-    return min_cnt
-
-def sl_corners(contours):
-    min_corn = len(contours[0])
-    min_cnt = contours[0]
-    sec_min_cnt = contours[0]
-    for cc in contours:
-        if len(cc) > 3:
-            if len(cc) < min_corn:
-                min_corn = len(cc)
-                sec_min_cnt = min_cnt
-                min_cnt = cc
-            if len(cc) == min_corn:
-                if cv2.contourArea(cc) > cv2.contourArea(min_cnt):
-                    min_corn = len(cc)
-                    sec_min_cnt = min_cnt
-                    min_cnt = cc
-    return sec_min_cnt
-
 def sg_corners(contour):
     y_max = 0
     y_min = contour[0][0][1]
@@ -88,32 +58,6 @@ def sg_corners(contour):
     return (y_min, y_max, x_min, x_max)
 
 def db_corners(left, right):
-    #min y, min x from left
-    #max y, max x from right
-    y_min = left[0][0][1]
-    x_min = left[0][0][0]
-    for i in range(len(left)):
-        y_val = left[i][0][1]
-        x_val = left[i][0][0]
-        #print(x_val)
-        #print(y_val, x_val)
-        if y_val < y_min:
-            y_min = y_val
-        if x_val < x_min:
-            x_min = x_val
-    y_max = 0
-    x_max = 0
-    for i in range(len(right)):
-        y_val = right[i][0][1]
-        x_val = right[i][0][0]
-        if y_val > y_max:
-            y_max = y_val
-        if x_val > x_max:
-            x_max = x_val
-    #print(y_min, y_max, x_min, x_max)
-    return (y_min, y_max, x_min, x_max)
-
-def db_corners2(left, right):
     ltup = sg_corners(left)
     rtup = sg_corners(right)
     cortup = []
@@ -142,12 +86,11 @@ blackright = sec_biggest_area(black_cnt)
 #cv2.drawContours(image, blackright, -1, (200, 200, 0), 20)
 cv2.imshow("blocks", image)
 
-vid_cnt = db_corners2(blackleft, blackright)
+vid_cnt = db_corners(blackleft, blackright)
 # print(vid_cnt)
 vid_im = im_from_tup(image, vid_cnt)
 cv2.imshow("faces", vid_im)
 
-print("whee, first commit")
 faces_cnt = get_contours(vid_im, False)
 print(len(faces_cnt))
 # #cv2.drawContours(vid_im, faces_cnt, -1, (200, 200, 0), 2)
